@@ -1,5 +1,5 @@
 {
-    "name": "gopaljha/laravel-SQS-datadog",
+    "name": "gopaljha/laravel-sqs-datadog",
     "description": "A simple package to wrap DataDog API for Timeseries metrics using the CURL, SQS, GuzzleHttp",
     "type": "package",
     "keywords": [
