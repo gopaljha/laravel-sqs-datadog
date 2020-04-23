@@ -3,7 +3,6 @@
 namespace GopalJha\LaravelSQSDataDog;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Foundation\AliasLoader;
 
 class LaravelSQSDataDogServiceProvider extends ServiceProvider
 {
@@ -38,7 +37,9 @@ class LaravelSQSDataDogServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind('datalog', DataLog::class);
         $this->app->bind('datadog', DataDog::class);
+        $this->app->bind('datadoglog', DataDogLog::class);
         $this->app->bind('datadogcurl', DataDogCurl::class);
         $this->app->bind('datadogclient', DataDogClient::class);
     }

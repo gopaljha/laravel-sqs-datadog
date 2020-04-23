@@ -34,7 +34,7 @@ class DataDogClient
         return retry(3, function () use ($series) {
             try {
                 $this->client->post(
-                    config('datadog.host') . 'series?api_key=' . config('datadog.api_key'),
+                    config('datadog.HOST') . 'series?api_key=' . config('datadog.API_KEY'),
                     [
                         RequestOptions::JSON => [
                             'series' => [$series],
@@ -44,11 +44,11 @@ class DataDogClient
             } catch (\Exception $th) {
                 $this->writeLog("Metrix: " . json_encode($series));
                 $this->writeLog("Parent Error: " . json_encode($th->getMessage()));
-                
+
                 try {
                     $this->client->request(
                         "POST",
-                        config('datadog.host') . 'series?api_key=' . config('datadog.api_key'),
+                        config('datadog.HOST') . 'series?api_key=' . config('datadog.API_KEY'),
                         [
                             "json" => [
                                 'series' => [$series],

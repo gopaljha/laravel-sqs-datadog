@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Debug\Dumper;
 use Illuminate\Contracts\Support\Htmlable;
 
-if (! function_exists('retry')) {
+if (!function_exists('retry')) {
     /**
      * Retry an operation a given number of times.
      *
@@ -23,13 +23,12 @@ if (! function_exists('retry')) {
         $attempts = 0;
         $times--;
 
-        beginning:
-        $attempts++;
+        beginning: $attempts++;
 
         try {
             return $callback($attempts);
         } catch (Exception $e) {
-            if (! $times || ($when && ! $when($e))) {
+            if (!$times || ($when && !$when($e))) {
                 throw $e;
             }
 

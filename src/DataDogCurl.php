@@ -10,7 +10,7 @@ class DataDogCurl
             return 'Sorry cURL is not installed!';
         }
         try {
-            //code...
+            // code...
             $series = [
                 'metric' => $metric,
                 'points' => [
@@ -27,7 +27,7 @@ class DataDogCurl
                 $series['host'] = $host;
             }
     
-            $url = config('datadog.host') . 'series?api_key=' . config('datadog.api_key');
+            $url = config('datadog.HOST') . 'series?api_key=' . config('datadog.API_KEY');
     
             $ch = curl_init($url);
             $payload = json_encode(array("series" => [$series]));
