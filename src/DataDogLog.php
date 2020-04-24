@@ -13,7 +13,7 @@ class DataDogLog
         $this->client = new Client;
     }
 
-    public function log($status, $message, $ddsource, $service, $ddtags, $hostname)
+    public function log($status, $message, $ddsource, $service, $ddtags, $hostname, $attributes)
     {
         if (!empty($status)) {
             $log['status'] = $status;
@@ -37,6 +37,12 @@ class DataDogLog
 
         if (!is_null($hostname)) {
             $log['hostname'] = $hostname;
+        }
+
+        if(!empty($attributes)) {
+            foreach ($attributes as $key => $value) {
+                $log["LOG_".$key] = $value;
+            }
         }
 
         return retry(3, function () use ($log) {
