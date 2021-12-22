@@ -31,36 +31,34 @@ class DataDogClient
             $series['host'] = $host;
         }
 
-        return retry(3, function () use ($series) {
+        try {
+            $this->client->post(
+                config('datadog.HOST') . 'series?api_key=' . config('datadog.API_KEY'),
+                [
+                    RequestOptions::JSON => [
+                        'series' => [$series],
+                    ],
+                ]
+            );
+        } catch (\Exception $th) {
+            $this->writeLog("Metrix: " . json_encode($series));
+            $this->writeLog("Parent Error: " . json_encode($th->getMessage()));
+
             try {
-                $this->client->post(
+                $this->client->request(
+                    "POST",
                     config('datadog.HOST') . 'series?api_key=' . config('datadog.API_KEY'),
                     [
-                        RequestOptions::JSON => [
+                        "json" => [
                             'series' => [$series],
                         ],
                     ]
                 );
-            } catch (\Exception $th) {
+            } catch (\Exception $td) {
                 $this->writeLog("Metrix: " . json_encode($series));
-                $this->writeLog("Parent Error: " . json_encode($th->getMessage()));
-
-                try {
-                    $this->client->request(
-                        "POST",
-                        config('datadog.HOST') . 'series?api_key=' . config('datadog.API_KEY'),
-                        [
-                            "json" => [
-                                'series' => [$series],
-                            ],
-                        ]
-                    );
-                } catch (\Exception $td) {
-                    $this->writeLog("Metrix: " . json_encode($series));
-                    $this->writeLog("Child Error: " . json_encode($td->getMessage()));
-                }
+                $this->writeLog("Child Error: " . json_encode($td->getMessage()));
             }
-        }, 500);
+        }
     }
 
     public function writeLog($message = null)
